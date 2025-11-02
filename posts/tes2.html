@@ -1,0 +1,123 @@
+<html><head><meta charset='UTF-8'><title>tes2</title></head><body><!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blog Viewer Fullscreen</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+}
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+}
+
+.overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #fff;
+      z-index: 9999;
+      display: none;
+      flex-direction: column;
+}
+
+.overlay iframe {
+      flex-grow: 1;
+      width: 100%;
+      border: none;
+}
+
+.overlay.close-btn {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      align-self: flex-end;
+      margin: 10px;
+      z-index: 10001;
+}
+
+.spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10000;
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 8px;
+      display: none;
+}
+
+.spinner img {
+      width: 40px;
+      height: 40px;
+}
+
+    @media (max-width: 600px) {
+      button,.close-btn {
+        font-size: 14px;
+        padding: 8px 16px;
+}
+
+.spinner img {
+        width: 30px;
+        height: 30px;
+}
+}
+  </style>
+</head>
+<body>
+
+  <h2>Tampilkan Blog B</h2>
+  <button onclick="showOverlay()">Lihat Blog B</button>
+
+  <div class="overlay" id="overlay">
+    <button class="close-btn" onclick="hideOverlay()">Tutup</button>
+    <div class="spinner" id="spinner">
+      <p>Memuat konten...</p>
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjar85hgvAVGTNIXEl0qQ1MxfK03SYKpLZY7hyphenhyphenIYnSVyX6Jn0ckx2ttFryK4e_7O-AvcpGpepHmG7ECsxpnaDukybMX-cuT2Rz7-0wFesGDjpGu-_Fk1lO9-KFm54waUuPt1IJykVw2kdeZqctvE5tBjlA8v4ifOv8BXRMZYQ9x79yuSUlKHWYTje3Vst8/s1600/ZJFD.gif" alt="Loading...">
+    </div>
+    <iframe id="blogIframe" src="" onload="hideSpinner()"></iframe>
+  </div>
+
+  <script>
+    function showOverlay() {
+      const overlay = document.getElementById('overlay');
+      const iframe = document.getElementById('blogIframe');
+      const spinner = document.getElementById('spinner');
+
+      spinner.style.display = 'block';
+      overlay.style.display = 'flex';
+      iframe.src = 'https://neu.komik.us/2025/10/magic-emperor-manhua-bahasa-indonesia.html';
+}
+
+    function hideOverlay() {
+      const overlay = document.getElementById('overlay');
+      const iframe = document.getElementById('blogIframe');
+      const spinner = document.getElementById('spinner');
+
+      overlay.style.display = 'none';
+      iframe.src = '';
+      spinner.style.display = 'none';
+}
+
+    function hideSpinner() {
+      document.getElementById('spinner').style.display = 'none';
+}
+  </script>
+
+</body>
+</html>
+</body></html>

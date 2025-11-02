@@ -1,0 +1,122 @@
+<html><head><meta charset='UTF-8'><title>untitled</title></head><body><script>
+  var label = "Manga"; // Ganti dengan label yang kamu inginkan
+  var numPosts = 6;    // Jumlah postingan per halaman
+  var startIndex = 1;  // Index awal postingan
+
+  function loadPosts() {
+    var url = "/feeds/posts/default/-/" + label + "?alt=json-in-script&start-index=" + startIndex + "&max-results=" + numPosts + "&callback=displayPosts";
+    var script = document.createElement('script');
+    script.src = url;
+    document.body.appendChild(script);
+}
+
+  function displayPosts(json) {
+    var entries = json.feed.entry;
+    var html = "<div class='post-grid'>";
+    for (var i = 0; i < entries.length; i++) {
+      var title = entries[i].title.$t;
+      var link = entries[i].link.find(l => l.rel === 'alternate').href;
+      var thumbnail = entries[i].media$thumbnail? entries[i].media$thumbnail.url.replace("/s72-c/", "/s160/"): "https://via.placeholder.com/160x100?text=No+Image";
+
+      html += "<div class='post-card'>";
+      html += "<a href='" + link + "'><img src='" + thumbnail + "' alt='" + title + "'/></a>";
+      html += "<h3><a href='" + link + "'>" + title + "</a></h3>";
+      html += "</div>";
+}
+    html += "</div>";
+
+    html += "<div class='pagination'>";
+    if (startIndex> 1) {
+      html += "<button onclick='prevPage()'>Previous</button>";
+}
+    html += "<button onclick='nextPage()'>Next</button>";
+    html += "</div>";
+
+    document.getElementById("post-container").innerHTML = html;
+}
+
+  function nextPage() {
+    startIndex += numPosts;
+    loadPosts();
+}
+
+  function prevPage() {
+    startIndex = Math.max(1, startIndex - numPosts);
+    loadPosts();
+}
+
+  window.onload = loadPosts;
+</script>
+
+<style>
+.post-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.post-card {
+  width: 48%;
+  max-width: 160px;
+  border: 1px solid #ddd;
+  padding: 8px;
+  box-sizing: border-box;
+  text-align: center;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  transition: box-shadow 0.3s ease;
+}
+
+.post-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.post-card img {
+  width: 100%;
+  max-height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.post-card h3 {
+  font-size: 0.9rem;
+  margin: 8px 0 0;
+}
+
+.post-card a {
+  text-decoration: none;
+  color: #333;
+}
+
+.pagination {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.pagination button {
+  padding: 8px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  margin: 0 5px;
+}
+
+/* Responsive tweaks */
+@media screen and (max-width: 480px) {
+.post-card {
+    width: 45%;
+}
+}
+
+@media screen and (min-width: 481px) and (max-width: 768px) {
+.post-card {
+    width: 30%;
+}
+}
+</style>
+
+<div id="post-container"></div></body></html>

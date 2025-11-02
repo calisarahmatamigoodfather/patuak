@@ -1,0 +1,33 @@
+<html><head><meta charset='UTF-8'><title>ass</title></head><body><h2>📚 Daftar Chapter One Piece</h2>
+<div id="onepiece-list">Memuat daftar...</div>
+
+<script>
+// Ganti 'One%20Piece' dengan nama label kamu (spasi = %20)
+const label = "One%20Piece";
+const maxPosts = 50; // jumlah postingan yang ingin ditampilkan
+
+fetch(`https://mangakuscan.blogspot.com/feeds/posts/default/-/${label}?alt=json&max-results=${maxPosts}`)
+.then(res => res.json())
+.then(data => {
+    const container = document.getElementById("onepiece-list");
+    container.innerHTML = "";
+
+    const entries = data.feed.entry || [];
+    entries.forEach(entry => {
+      const title = entry.title.$t;
+      const link = entry.link.find(l => l.rel === "alternate").href;
+
+      // Ekstrak "Chapter X" dari judul
+      const match = title.match(/chapter\s*\d+/i);
+      const shortTitle = match? `One Piece ${match[0]}`: title;
+
+      const item = document.createElement("div");
+      item.innerHTML = `<a href="${link}" style="display:block; margin-bottom:10px; color:#1E90FF;">${shortTitle}</a>`;
+      container.appendChild(item);
+});
+})
+.catch(err => {
+    document.getElementById("onepiece-list").innerHTML = "Gagal memuat postingan.";
+    console.error(err);
+});
+</script></body></html>
